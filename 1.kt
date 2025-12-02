@@ -1,3 +1,7 @@
+package days
+
+import AOCDay
+import input.parseLines
 import java.net.URI
 
 object DayOne : AOCDay {
@@ -35,19 +39,16 @@ object DayOne : AOCDay {
         var hitZero = 0
 
         lines.map { (it[0] == 'R') to it.substring(1).toInt() }.forEach { (increase, num) ->
+            val remaining = num.mod(100)
+            val initDial = dial
 
-            var hitZeroThisTime = 0
-            MutableList(num / 100) { 100 }.apply { add(num.mod(100)) }.forEach { split ->
-                val initDial = dial
+            dial += if (increase) remaining else -remaining
+            dial = dial.mod(100)
 
-                dial += if (increase) split else -split
-                dial = dial.mod(100)
+            val wrapped = initDial != 0 && ((increase && dial < initDial) || (!increase && dial > initDial))
+            if (dial == 0 || dial == initDial || wrapped) hitZero++
 
-                val wrapped = initDial != 0 && ((increase && dial < initDial) || (!increase && dial > initDial))
-                if (dial == 0 || dial == initDial || wrapped) hitZeroThisTime++
-            }
-            hitZero += hitZeroThisTime
-
+            hitZero += (num / 100)
         }
 
         return hitZero
