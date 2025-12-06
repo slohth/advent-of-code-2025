@@ -51,15 +51,11 @@ object DaySix : AOCDay {
         var size = 0
         lines.last().forEachIndexed { i, char ->
             if (i == 0) return@forEachIndexed
-            if (i == lines.last().length - 1) {
-                if (char == ' ') size++
-                sizes.add(size + 1)
-                return@forEachIndexed
-            }
             if (char != ' ') {
                 sizes.add(size)
                 size = 0
             } else { size++ }
+            if (i == lines.last().length - 1) sizes.add(size + 1)
         }
 
         val numberGrids = mutableListOf<Array<Array<String>>>() // create number grids based on sizes
@@ -79,7 +75,7 @@ object DaySix : AOCDay {
             index = endIndex + 1
         }
 
-        numberGrids.forEachIndexed { i, grid ->
+        numberGrids.forEachIndexed { i, grid -> // calculate
             total += calculate(getCephalopodNums(grid), operators[i])
         }
         return total
